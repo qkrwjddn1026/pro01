@@ -1,10 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="java.util.*, java.sql.*" %>  
+<%@ page import="java.sql.*" %>
 <%
 	request.setCharacterEncoding("UTF-8");
 	response.setCharacterEncoding("UTF-8");
 	response.setContentType("text/html; charset=UTF-8");
+	
+	String no = request.getParameter("no");
+	String title = "";
+	String content = "";
+	String author = "";
+	String regdate = "";
+	
 	
 	Connection con = null;
 	PreparedStatement pstmt = null;
@@ -18,11 +25,27 @@
 	try {
 		Class.forName("oracle.jdbc.OracleDriver");
 		con = DriverManager.getConnection(url, dbid, dbpw);
-		sql = "select * from boarda";
+		sql = "update boarda set title=?, content=? where no=?";
 		pstmt = con.prepareStatement(sql);
+		pstmt.setString(1, title);
+		pstmt.setString(2, content);
+		pstmt.setString(3, no);
 		//select된 데이터가 없으면, rs=null이 됨
-		rs = pstmt.executeQuery();
-		//int cnt = pstmt.executeUpdate();
+		
+		
+		if(rs.next()){
+			title = rs.getString("title");
+			content = rs.getString("content");
+			author = rs.getString("author");
+			regdate = rs.getString("regdate");
+			
+		}
+	} catch(Exception e){
+		e.printStackTrace();
+	} finally {
+		pstmt.close();
+		con.close();
+	}
 %>
 <!DOCTYPE html>
 <html>
@@ -69,50 +92,41 @@
         <div class="bread">
             <div class="bread_fr">
                 <a href="index.jsp" class="home">HOME</a> &gt;
-                <span class="sel">게시판목록</span>
+                <span class="sel">게시글</span>
             </div>
         </div>
         <section class="page">
             <div class="page_wrap">
-                <h2 class="page_title">게시판목록</h2>
+                <h2 class="page_title">게시글</h2>
   				<div class="tb_fr">
   					<table class="tb">
-  						<thead>
-  							<tr>
-  								<th>번호</th>
-  								<th>제목</th>
-  								<th>내용</th>	
-  								<th>작성자</th>
-  								<th>작성일</th>
-  							</tr>
-  						</thead>
   						<tbody>             
-<%
-		int cnt = 0;
-		while(rs.next()){
-			cnt+=1;
-%>
-			<tr>
-					<td><a href='boardDetail.jsp?no=<%=rs.getString("no") %>'><%=rs.getString("no") %></a></td>
-					<td><%=rs.getString("title") %></td>
-					<td><%=rs.getString("content") %></td>
-					<td><%=rs.getString("author") %></td>
-					<td><%=rs.getString("regdate") %></td>
-			</tr>
-<%
-		}
-	} catch(Exception e){
-		e.printStackTrace();
-	} finally {
-		rs.close();
-		pstmt.close();
-		con.close();
-	}
-%>
+							<tr>
+								<th>번호</th>
+								<td><%=no %></td>
+								<input type="hidden">
+							</tr>
+							<tr>
+								<th>제목</th>
+								<td><%=title %></td>
+								<input type="text">
+							</tr>
+							<tr>
+								<th>내용</th>
+								<td><%=content %></td>
+							</tr>
+							<tr>
+								<th>작성자</th>
+								<td><%=author %></td>
+							</tr>
+							<tr>
+								<th>작성일</th>
+								<td><%=regdate %></td>
+							</tr>
+							
 						</tbody> 
 					</table>
-					<a href="boardModify.jsp">글 수정</a> <br><br>
-					<a href="boardDel.jsp">글 삭제</a>
+					<a href="boardList.jsp">게시판</a>
 				</div>
 			</div>
         </section>

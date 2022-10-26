@@ -3,7 +3,7 @@
 <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WE DISPLAY</title>
+    <title>삼성 중공업</title>
     
    <!-- 메타포 -->
    <meta name="description" content="위 디스플레이에서 다양한 디스플레이 설치사례와 전문업체를 살펴보고 견적을 문의해보세요.">
@@ -24,9 +24,9 @@
    <!-- 구형 브라우저 html5태그 인식 -->
    <script src="./js/html5shiv.js"></script>
    <!-- 구형 브라우저에서 css animation 인식 -->
-   <script src="./js/prefixfree.min.js"></script>
+  <!--   <script src="./js/prefixfree.min.js"></script>-->
    <!-- 구형 브라우저에서 미디어쿼리 인식 -->
-   <script src="./js/respond.min.js"></script>
+    <script src="./js/respond.min.js"></script>
    <!-- jquery 플러그인 연결 -->
    <script src="./js/jquery-1.11.1.js"></script>
    <link rel="stylesheet" href="./css/reset2.css">

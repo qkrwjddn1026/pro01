@@ -15,7 +15,7 @@
     %>     
     <div>  
     	<a href="memList.jsp">회원 관리</a>
-    	<a href="boardList.jsp">게시판 관리</a>
+    	<a href="boardList2.jsp">게시판 관리</a>
         <a href="logout.jsp">로그아웃</a>
         <a href="sitemap.jsp">사이트맵</a>
    </div>
@@ -48,6 +48,7 @@
                                 <li><a href="company.jsp#page1">기업정보</a></li>
                                 <li><a href="company.jsp#page2">거제조선소 소개</a></li>
                                 <li><a href="company.jsp#page3">사업장안내</a></li>
+                                <li><a href="boardList2.jsp">게시판</a></li>
                             </ul>
                         </li>
                         <li class="item2">

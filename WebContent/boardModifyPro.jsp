@@ -29,7 +29,7 @@
 		pstmt.setInt(3, no);
 		cnt = pstmt.executeUpdate();
 		if(cnt>0){
-			response.sendRedirect("boardList.jsp");
+			response.sendRedirect("boardList2.jsp");
 		} else {
 			response.sendRedirect("boardDetail.jsp?no="+no);
 		}

@@ -16,26 +16,14 @@
 	String dbid = "system";
 	String dbpw = "1234";
 	String sql = "";
-	int amount = 0;
-	int curPage = 1;
-	int pageCount = 1;
-	int startNum = 1;
-	int endNum = 1;
-	if(request.getParameter("curPage")!=null){
-		curPage = Integer.parseInt(request.getParameter("curPage"));
-	}
 	
-	pageCount = (amount % 10==0) ? (amount / 10) : (amount / 10)+ 1;
-	startNum = curPage * 10 - 9;
-	endNum = curPage * 10; 
+	int curPage = 1;
 	
 	try {
 		Class.forName("oracle.jdbc.OracleDriver");
 		con = DriverManager.getConnection(url, dbid, dbpw);
-		sql = "select no, title, content, author, resdate from (select rownum rn, no, title, content, author, resdate from boarda order by resdate desc) t1 where t1.rn between ? and ?" ;
+		sql = "select * from boarda ";
 		pstmt = con.prepareStatement(sql);
-		pstmt.setInt(1, startNum);
-		pstmt.setInt(2, endNum);
 		rs = pstmt.executeQuery();
 		
 %>
@@ -45,6 +33,14 @@
 	<%@ include file="head.jsp" %>
     <link rel="stylesheet" href="./css/reset2.css">
     <link rel="stylesheet" href="header.css">
+    <link rel="stylesheet" href="datatables.min.css">
+    <script src="datatables.min.js"></script>
+   <script>
+    $(document).ready( function () {  
+	$('#myTable').DataTable();  
+	} );
+    </script>
+
     <style>
     /* header.css */
     .hd { position:fixed; }
@@ -68,6 +64,7 @@
 	.tb tr th:first-child { width:80px; text-align:center; }
 	.tb tr th:nth-child(2) { width:160px; text-align:center; }
 	.tb tr th:nth-child(3) { width:160px; text-align:center; }
+	
 	.tb tr th:last-child { text-align:center; }
 	
 	.btn_group { clear:both; width:580px; margin:20px auto; }
@@ -97,19 +94,19 @@
             <div class="page_wrap">
                 <h2 class="page_title">게시판 글 목록</h2>
   				<div class="tb_fr">
-  					<table class="tb">
+  					<table class="tb" id="myTable">
   						<thead>
   							<tr>
   								<th>번호</th>
   								<th>제목</th>
-  								<th>내용</th>
+  								
   								<th>작성자</th>
   								<th>작성일</th>
   							</tr>
   						</thead>
   						<tbody>             
 <%
-		int cnt = startNum - 1;
+		int cnt = 0;
 		while(rs.next()){
 			cnt+=1;
 			SimpleDateFormat yymmdd = new SimpleDateFormat("yyyy-MM-dd");
@@ -128,7 +125,7 @@
 					<%
 					}
 					%>
-					<td><%=rs.getString("content") %></td>
+					
 					<td><%=rs.getString("author") %></td>
 					<td><%=date %></td>
 			</tr>

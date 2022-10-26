@@ -28,7 +28,7 @@
 		pstmt.setString(3, author);
 		cnt = pstmt.executeUpdate();
 		if(cnt>0){
-			response.sendRedirect("boardList.jsp");
+			response.sendRedirect("boardList2.jsp");
 		} else {
 			response.sendRedirect("boardWrite.jsp");
 		}

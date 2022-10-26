@@ -87,7 +87,7 @@
 						</table>
 						<div class="btn_group">
 							<button type="submit" class="btn primary">글 쓰기</button>
-							<a href="boardList.jsp" class="btn primary">게시판 목록</a>
+							<a href="boardList2.jsp" class="btn primary">게시판 목록</a>
 						</div>
 					</form>
 				</div>

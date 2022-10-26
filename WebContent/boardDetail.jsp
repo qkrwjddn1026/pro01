@@ -6,12 +6,13 @@
 	response.setCharacterEncoding("UTF-8");
 	response.setContentType("text/html; charset=UTF-8");
 	
-	String no = request.getParameter("no");
+	String sid = (String) session.getAttribute("id");
+	
+	int no = Integer.parseInt(request.getParameter("no"));
 	String title = "";
 	String content = "";
+	String resdate = "";
 	String author = "";
-	String regdate = "";
-	
 	
 	Connection con = null;
 	PreparedStatement pstmt = null;
@@ -27,17 +28,14 @@
 		con = DriverManager.getConnection(url, dbid, dbpw);
 		sql = "select * from boarda where no=?";
 		pstmt = con.prepareStatement(sql);
-		pstmt.setString(1, no);
-		//select된 데이터가 없으면, rs=null이 됨
+		pstmt.setInt(1, no);
 		rs = pstmt.executeQuery();
-		//int cnt = pstmt.executeUpdate();
 		
 		if(rs.next()){
 			title = rs.getString("title");
 			content = rs.getString("content");
+			resdate = rs.getString("resdate");
 			author = rs.getString("author");
-			regdate = rs.getString("regdate");
-			
 		}
 	} catch(Exception e){
 		e.printStackTrace();
@@ -70,20 +68,26 @@
     .tb { display:table; margin:40px auto; width:580px; border-collapse:collapse; }
     .tb tr { display:table-row; }
     .tb td, .tb th { display:table-cell; }
-    .tb th { height: 48px; border-bottom:2px solid #333; border-top:2px solid #333; 
-    color:#fff; background-color:#333; }
-    .tb td { height: 48px; border-bottom:1px solid #333; text-align:center; }
-	.tb tr th:first-child { width:80px; text-align:center; }
-	.tb tr th:nth-child(2) { width:160px; text-align:center; }
-	.tb tr th:nth-child(3) { width:160px; text-align:center; }
-	.tb tr th:last-child { text-align:center; }
+    .tb th { height: 48px; border-bottom:1px solid #fff; color:#fff; background-color:#333; 
+    width:120px; }
+    .tb td { height: 48px; border-bottom:1px solid #333; text-align:left;
+    padding-left:80px; border-right:2px solid #333; }
+    .tb tr:first-child th { border-top:2px solid #333; }
+    .tb tr:first-child td { border-top:2px solid #333; }
+    .tb tr:last-child th { border-bottom:2px solid #333; }
+    .tb tr:last-child td { border-bottom:2px solid #333; }
+	.btn_group { clear:both; width:580px; margin:20px auto; }
+	.btn_group .btn { display:block; float:left; margin:20px; min-width:100px; padding:8px; font-size:14px;
+	line-height:24px; border-radius:36px; border:2px solid #333; text-align:center; }
+	.btn_group .btn.primary { background-color:#333; color:#fff; }
+	.btn_group .btn.primary:hover { background-color:deepskyblue; }
     </style>
     <link rel="stylesheet" href="footer.css">
 </head>
 <body>
 <div class="wrap">
     <header class="hd">
-		<%@ include file="nav.jsp" %>
+		<%@include file="nav.jsp"%>
     </header>
     <div class="content">
         <figure class="vs">
@@ -92,17 +96,17 @@
         <div class="bread">
             <div class="bread_fr">
                 <a href="index.jsp" class="home">HOME</a> &gt;
-                <span class="sel">게시글</span>
+                <span class="sel">글 상세보기</span>
             </div>
         </div>
         <section class="page">
             <div class="page_wrap">
-                <h2 class="page_title">게시글</h2>
+                <h2 class="page_title">글 상세보기</h2>
   				<div class="tb_fr">
   					<table class="tb">
   						<tbody>             
 							<tr>
-								<th>번호</th>
+								<th>글 번호</th>
 								<td><%=no %></td>
 							</tr>
 							<tr>
@@ -119,12 +123,19 @@
 							</tr>
 							<tr>
 								<th>작성일</th>
-								<td><%=regdate %></td>
+								<td><%=resdate %></td>
 							</tr>
-							
 						</tbody> 
 					</table>
-					<a href="boardList.jsp">게시판</a>
+					<div class="btn_group">
+						<a href="boardList.jsp" class="btn primary">게시판 목록</a>
+						<%
+							if(sid.equals("admin") || sid.equals(author)) {
+						%>
+						<a href='boardModify.jsp?no=<%=no %>' class="btn primary">글 수정</a>
+						<a href='boardDel.jsp?no=<%=no %>' class="btn primary">글 삭제</a>
+						<% } %>
+					</div>
 				</div>
 			</div>
         </section>

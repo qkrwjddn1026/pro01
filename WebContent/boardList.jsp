@@ -1,10 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="java.util.*, java.sql.*" %>  
+<%@ page import="java.util.Date, java.sql.*, java.text.*" %>
 <%
 	request.setCharacterEncoding("UTF-8");
 	response.setCharacterEncoding("UTF-8");
 	response.setContentType("text/html; charset=UTF-8");
+	
+	String sid = (String) session.getAttribute("id");
 	
 	Connection con = null;
 	PreparedStatement pstmt = null;
@@ -18,11 +20,10 @@
 	try {
 		Class.forName("oracle.jdbc.OracleDriver");
 		con = DriverManager.getConnection(url, dbid, dbpw);
-		sql = "select * from boarda";
+		sql = "select * from boarda ";
 		pstmt = con.prepareStatement(sql);
-		//select된 데이터가 없으면, rs=null이 됨
 		rs = pstmt.executeQuery();
-		//int cnt = pstmt.executeUpdate();
+		
 %>
 <!DOCTYPE html>
 <html>
@@ -54,6 +55,12 @@
 	.tb tr th:nth-child(2) { width:160px; text-align:center; }
 	.tb tr th:nth-child(3) { width:160px; text-align:center; }
 	.tb tr th:last-child { text-align:center; }
+	
+	.btn_group { clear:both; width:580px; margin:20px auto; }
+	.btn_group .btn { display:block; float:left; margin:20px; min-width:100px; padding:8px; font-size:14px;
+	line-height:24px; border-radius:36px; border:2px solid #333; text-align:center; }
+	.btn_group .btn.primary { background-color:#333; color:#fff; }
+	.btn_group .btn.primary:hover { background-color:deepskyblue; }
     </style>
     <link rel="stylesheet" href="footer.css">
 </head>
@@ -69,19 +76,19 @@
         <div class="bread">
             <div class="bread_fr">
                 <a href="index.jsp" class="home">HOME</a> &gt;
-                <span class="sel">게시판목록</span>
+                <span class="sel">게시판 목록</span>
             </div>
         </div>
         <section class="page">
             <div class="page_wrap">
-                <h2 class="page_title">게시판목록</h2>
+                <h2 class="page_title">게시판 글 목록</h2>
   				<div class="tb_fr">
   					<table class="tb">
   						<thead>
   							<tr>
   								<th>번호</th>
   								<th>제목</th>
-  								<th>내용</th>	
+  								<th>내용</th>
   								<th>작성자</th>
   								<th>작성일</th>
   							</tr>
@@ -97,7 +104,7 @@
 					<td><%=rs.getString("title") %></td>
 					<td><%=rs.getString("content") %></td>
 					<td><%=rs.getString("author") %></td>
-					<td><%=rs.getString("regdate") %></td>
+					<td><%=rs.getString("resdate") %></td>
 			</tr>
 <%
 		}
@@ -111,8 +118,15 @@
 %>
 						</tbody> 
 					</table>
-					<a href="boardModify.jsp">글 수정</a> <br><br>
-					<a href="boardDel.jsp">글 삭제</a>
+					<div class="btn_group">
+					<%
+						if(sid!=null) {
+					%>
+						<a href="boardWrite.jsp" class="btn primary">글 쓰기</a>
+					<%
+						}
+					%>
+					</div>
 				</div>
 			</div>
         </section>

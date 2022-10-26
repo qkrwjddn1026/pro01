@@ -5,3 +5,4 @@ select * from membera;
 alter table membera rename column tell to tel
 select * from boarda;
 alter table boarda rename column resdate to regdate
+alter table boarda rename column regdate to resdate

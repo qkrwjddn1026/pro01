@@ -4,7 +4,9 @@
 <%@ include file="connectionPool.conf" %>
 <%
 	String sid = (String) session.getAttribute("id");
+	
 	String author="";
+	
 %>
 
 <%

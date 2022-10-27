@@ -9,6 +9,7 @@
 	String sid = (String) session.getAttribute("id");
 	
 	int no = Integer.parseInt(request.getParameter("no"));
+	int gubun = 0;
 	String title = "";
 	String content = "";
 	String resdate = "";
@@ -26,12 +27,13 @@
 	try {
 		Class.forName("oracle.jdbc.OracleDriver");
 		con = DriverManager.getConnection(url, dbid, dbpw);
-		sql = "select * from boarda where no=?";
+		sql = "select * from faqa where no=?";
 		pstmt = con.prepareStatement(sql);
 		pstmt.setInt(1, no);
 		rs = pstmt.executeQuery();
 		
 		if(rs.next()){
+			gubun = rs.getInt("gubun");
 			title = rs.getString("title");
 			content = rs.getString("content");
 			resdate = rs.getString("resdate");
@@ -96,19 +98,25 @@
         <div class="bread">
             <div class="bread_fr">
                 <a href="index.jsp" class="home">HOME</a> &gt;
-                <span class="sel">글 상세보기</span>
+                <span class="sel">질문 상세보기</span>
             </div>
         </div>
         <section class="page">
             <div class="page_wrap">
-                <h2 class="page_title">글 상세보기</h2>
+                <h2 class="page_title">상세보기</h2>
   				<div class="tb_fr">
   					<table class="tb">
-  						<tbody>             
-							<tr>
-								<th>글 번호</th>
-								<td><%=no %></td>
-							</tr>
+  						<tbody>    
+  							<tr>
+								<th>구분</th>
+								<td><%
+								if(gubun==0){
+									out.println("<span>질문</span>");
+								} else {
+									out.println("<span>답변</span>");
+								}
+								%></td>
+							</tr>         
 							<tr>
 								<th>제목</th>
 								<td><%=title %></td>
@@ -128,12 +136,12 @@
 						</tbody> 
 					</table>
 					<div class="btn_group">
-						<a href="boardList2.jsp" class="btn primary">게시판 목록</a>
+						<a href="faq.jsp" class="btn primary">자주 하는 질문</a>
 						<%
-							if(sid.equals("admin") || sid.equals(author)) {
+							if(sid.equals("admin")) {
 						%>
-						<a href='boardModify.jsp?no=<%=no %>' class="btn primary">글 수정</a>
-						<a href='boardDel.jsp?no=<%=no %>' class="btn primary">글 삭제</a>
+						<a href='faqModify.jsp?no=<%=no %>' class="btn primary">글 수정</a>
+						<a href='faqDel.jsp?no=<%=no %>' class="btn primary">글 삭제</a>
 						<% } %>
 					</div>
 				</div>

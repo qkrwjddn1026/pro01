@@ -81,6 +81,7 @@
                                 <li><a href="management.jsp#page1">안전경영</a></li>
                                 <li><a href="management.jsp#page2">준법경영</a></li>
                                 <li><a href="management.jsp#page3">지속가능 경영보고서</a></li>
+                                <li><a href="faq.jsp">자주 하는 질문</a></li>
                             </ul>
                         </li>
                     </ul>

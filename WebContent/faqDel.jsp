@@ -5,10 +5,7 @@
 	request.setCharacterEncoding("UTF-8");
 	response.setCharacterEncoding("UTF-8");
 	response.setContentType("text/html; charset=UTF-8");
-	
-	String title = request.getParameter("title");
-	String content = request.getParameter("content");
-	String author = request.getParameter("author");
+	int no = Integer.parseInt(request.getParameter("no"));
 	
 	Connection con = null;
 	PreparedStatement pstmt = null;
@@ -22,16 +19,14 @@
 	try {
 		Class.forName("oracle.jdbc.OracleDriver");
 		con = DriverManager.getConnection(url, dbid, dbpw);
-		sql = "insert into boarda values (besq.nextval, ?, ?, ?, sysdate)";
+		sql = "delete from faqa where no=?";
 		pstmt = con.prepareStatement(sql);
-		pstmt.setString(1, title);
-		pstmt.setString(2, content);
-		pstmt.setString(3, author);
+		pstmt.setInt(1, no);
 		cnt = pstmt.executeUpdate();
 		if(cnt>0){
-			response.sendRedirect("boardList2.jsp");
+			response.sendRedirect("faq.jsp");
 		} else {
-			response.sendRedirect("boardWrite.jsp");
+			response.sendRedirect("faqDetail.jsp?no="+no);
 		}
 	} catch(Exception e){
 		e.printStackTrace();
@@ -39,4 +34,4 @@
 		pstmt.close();
 		con.close();
 	}
-%> 
+%>

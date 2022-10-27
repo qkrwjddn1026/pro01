@@ -9,3 +9,7 @@ select no, title, content, author, resdate from
 (select rownum rn, no, title, content, author, resdate from boarda order by resdate desc)
  t1 where t1.rn between 11 and 20;
 -- 글 수정
+ 
+select sysdate now from dual;
+
+select * from faqa;

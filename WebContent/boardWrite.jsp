@@ -86,7 +86,7 @@
 							</tbody> 
 						</table>
 						<div class="btn_group">
-							<button type="submit" class="btn primary">글 쓰기</button>
+							<button type="submit" class="btn primary">글 등록하기</button>
 							<a href="boardList2.jsp" class="btn primary">게시판 목록</a>
 						</div>
 					</form>

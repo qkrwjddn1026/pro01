@@ -1,52 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="java.sql.*" %>
 <%
-	request.setCharacterEncoding("UTF-8");
-	response.setCharacterEncoding("UTF-8");
-	response.setContentType("text/html; charset=UTF-8");
-	
-	String sid = (String) request.getAttribute("id");
-	
-	int no = Integer.parseInt(request.getParameter("no"));
-	String title = "";
-	String content = "";
-	String resdate = "";
-	String author = "";
-	
-	Connection con = null;
-	PreparedStatement pstmt = null;
-	ResultSet rs = null;
-	
-	String url = "jdbc:oracle:thin:@localhost:1521:xe";
-	String dbid = "system";
-	String dbpw = "1234";
-	String sql = "";
-	
-	try {
-		Class.forName("oracle.jdbc.OracleDriver");
-		con = DriverManager.getConnection(url, dbid, dbpw);
-		sql = "select a.no no, a.title title, a.content content, ";
-		sql = sql + "b.name name, a.resdate resdate, a.author author ";
-		sql = sql + "from boarda a inner join membera b ";
-		sql = sql + "on a.author=b.id where a.no=?";
-		pstmt = con.prepareStatement(sql);
-		pstmt.setInt(1, no);
-		rs = pstmt.executeQuery();
-		
-		if(rs.next()){
-			title = rs.getString("title");
-			content = rs.getString("content");
-			resdate = rs.getString("resdate");
-			author = rs.getString("author");
-		}
-	} catch(Exception e){
-		e.printStackTrace();
-	} finally {
-		rs.close();
-		pstmt.close();
-		con.close();
-	}
+	String sid = (String) session.getAttribute("id");
 %>
 <!DOCTYPE html>
 <html>
@@ -68,7 +23,7 @@
     .page_title { padding-top: 1em; text-align: center; }
     .home { color:#333; }
     .frm1 { padding: 24px; width: 960px; margin:50px auto; }
-    .tb { display:table; margin:40px auto; width:1000px; height:500px; border-collapse:collapse; }
+    .tb { display:table; margin:40px auto; width:900px; border-collapse:collapse; }
     .tb tr { display:table-row; }
     .tb td, .tb th { display:table-cell; }
     .tb th { height: 48px; border-bottom:1px solid #fff; color:#fff; background-color:#333; 
@@ -97,44 +52,46 @@
     </header>
     <div class="content">
         <figure class="vs">
-            <img src="./img/samsung1.jpg" alt="비주얼">
+            <img src="./img/samsung1.jpg"alt="비주얼">
         </figure>
         <div class="bread">
             <div class="bread_fr">
                 <a href="index.jsp" class="home">HOME</a> &gt;
-                <span class="sel">글 수정하기</span>
+                <span class="sel">글 쓰기</span>
             </div>
         </div>
         <section class="page">
             <div class="page_wrap">
-                <h2 class="page_title">글 수정하기</h2>
+                <h2 class="page_title">글 쓰기</h2>
   				<div class="frm1">
-  					<form name="frm" action="boardModifyPro.jsp" method="post" class="frm">
+  					<form name="frm" action="faqWritePro.jsp" method="post" class="frm">
 	  					<table class="tb">
-	  						<tbody>             
-								<tr>
-									<th>글 번호</th>
-									<td><%=no %><input type="hidden" name="no" id="no" value="<%=no %>" readonly></td>
-								</tr>
+	  						<tbody>     
+	  							<tr>
+									<th>구분</th>
+									<td><input type="text" name="gubun" id="gubun" class="in_data" required /></td>
+								</tr>      
 								<tr>
 									<th>제목</th>
-									<td><input type="text" name="title" id="title" value="<%=title %>" class="in_data" required /></td>
+									<td><input type="text" name="title" id="title" class="in_data" required /></td>
 								</tr>
 								<tr>
 									<th>내용</th>
 									<td>
-										<textarea cols="100" rows="8" name="content" id="content"><%=content %></textarea>
+										<textarea cols="100" rows="8" name="content" id="content"></textarea>
 									</td>
 								</tr>
 								<tr>
 									<th>작성자</th>
-									<td><%=author %></td>
+									<td><%=sid %>
+									<input type="hidden" name="author" id="author" value="<%=sid %>"> 
+									</td>
 								</tr>
 							</tbody> 
 						</table>
 						<div class="btn_group">
-							<button type="submit" class="btn primary">글 수정하기</button>
-							<a href="boardList2.jsp" class="btn primary">게시판 목록</a>
+							<button type="submit" class="btn primary">글 등록하기</button>
+							<a href="faq.jsp" class="btn primary">자주 하는 질문</a>
 						</div>
 					</form>
 				</div>

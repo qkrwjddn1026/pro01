@@ -6,8 +6,10 @@
 	response.setCharacterEncoding("UTF-8");
 	response.setContentType("text/html; charset=UTF-8");
 	
-	String sid = (String) session.getAttribute("id");
-	
+	String uid = (String) session.getAttribute("id");
+	if(uid==null){
+		uid="guest";
+	}
 	Connection con = null;
 	PreparedStatement pstmt = null;
 	ResultSet rs = null;
@@ -17,12 +19,11 @@
 	String dbpw = "1234";
 	String sql = "";
 	
-	int curPage = 1;
 	
 	try {
 		Class.forName("oracle.jdbc.OracleDriver");
 		con = DriverManager.getConnection(url, dbid, dbpw);
-		sql = "select * from boarda ";
+		sql = "select * from qnaa order by parno desc, lev asc, no asc";
 		pstmt = con.prepareStatement(sql);
 		rs = pstmt.executeQuery();
 		
@@ -87,12 +88,12 @@
         <div class="bread">
             <div class="bread_fr">
                 <a href="index.jsp" class="home">HOME</a> &gt;
-                <span class="sel">게시판 목록</span>
+                <span class="sel">질문 및 답변</span>
             </div>
         </div>
         <section class="page">
             <div class="page_wrap">
-                <h2 class="page_title">게시판 글 목록</h2>
+                <h2 class="page_title">질문 및 답변</h2>
   				<div class="tb_fr">
   					<table class="tb" id="myTable">
   						<thead>
@@ -111,19 +112,65 @@
 			SimpleDateFormat yymmdd = new SimpleDateFormat("yyyy-MM-dd");
 			String date = yymmdd.format(rs.getDate("resdate"));
 %>
+		
+			
+			
 			<tr>
-					<td><%=cnt %></td>
-					<%
-					if(sid!=null) {
+					<td>
+						<%
+							if(rs.getInt("lev")==0) {
+								cnt++;
+								out.println("<span>"+cnt+"</span>");
+							}
+						%>
+					</td>
+					<td>
+					<% 
+						if(rs.getInt("lev")==0) {
+							if(rs.getString("sec").equals("Y")) {
+								if(uid.equals(rs.getString("author")) || uid.equals("admin")){
 					%>
-						<td><a href='boardDetail.jsp?no=<%=rs.getInt("no") %>'><%=rs.getString("title") %></a></td>
+									<a href='qnaDetail.jsp?no=<%=rs.getInt("no") %>' class="sec1"><%=rs.getString("title") %></a>
 					<%
-					} else {
-					%>
-						<td><%=rs.getString("title") %></td>
+								} else {
+					%>	
+									<span class="sec1"><%=rs.getString("title") %></span>
 					<%
-					}
+								}
+							} else if(rs.getString("sec").equals("N") && uid!="guest"){
+					%>	
+									<a href='qnaDetail.jsp?no=<%=rs.getInt("no") %>'><%=rs.getString("title") %></a>
+					<%
+							} else {
+					%>	
+									<span><%=rs.getString("title") %></span>
+					<%
+							}
 					%>
+					<% 
+						} else {
+							if(rs.getString("sec").equals("Y")) {
+								if(uid.equals(rs.getString("author")) || uid.equals("admin")){
+					%>
+									<a href='qnaDetail.jsp?no=<%=rs.getInt("no") %>' style="padding-left:60px;" class="sec2"><%=rs.getString("title") %></a>
+					<%
+								} else {
+					%>
+									<span style="padding-left:60px;" class="sec2"><%=rs.getString("title") %></span>				
+					<%
+								}		
+							} else if(rs.getString("sec").equals("N") && uid!="guest"){
+					%>
+								<a href='qnaDetail.jsp?no=<%=rs.getInt("no") %>' style="padding-left:60px;"><%=rs.getString("title") %></a>						
+					<%
+							} else {
+					%>
+						 		<span style="padding-left:60px;"><%=rs.getString("title") %></span>
+					<%
+							}
+						} 
+					%>
+					</td>
 					<td><%=rs.getString("author") %></td>
 					<td><%=date %></td>
 			</tr>
@@ -140,10 +187,10 @@
 				</tbody> 
 			</table>
 					<div class="btn_group">
-					<% if(sid!=null)
+					<% if(uid!=null)
 						{	
 					%>
-						<a href="boardWrite.jsp" class="btn primary">글 쓰기</a>
+						<a href="qnaWrite.jsp" class="btn primary">글 쓰기</a>
 					<%	
 						}
 					%>

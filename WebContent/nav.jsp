@@ -65,6 +65,7 @@
                                 <li><a href="investment.jsp#page1">재무정보</a></li>
                                 <li><a href="investment.jsp#page2">주가정보</a></li>
                                 <li><a href="investment.jsp#page3">지배구조</a></li>
+                                <li><a href="online.jsp">온라인 상담</a></li>
                             </ul>
                         </li>
                         <li class="item4">
@@ -73,6 +74,7 @@
                                 <li><a href="">채용공고</a></li>
                                 <li><a href="">입사지원가이드</a></li>
                                 <li><a href="">인사제도</a></li>
+                                <li><a href="qna2.jsp">질문 및 답변</a></li>
                             </ul>
                         </li>
                         <li class="item5">

@@ -22,4 +22,4 @@ insert into faqa values (fseq.nextval, '질문5에 대한 답변', '질문5에 대한 답변 �
 
 select * from faqa order by parno asc, gubun asc;
 
-
+commit;

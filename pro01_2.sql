@@ -13,3 +13,4 @@ select no, title, content, author, resdate from
 select sysdate now from dual;
 
 select * from faqa;
+select * from qnaa;

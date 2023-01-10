@@ -10,7 +10,7 @@ sec char(1)             -- 비밀글 유무(y/n)
 
 create sequence qseq;
 
-select * from qnaa order by parno asc, lev asc;
+select * from qnaa order by parno desc, lev asc, no asc;
 
 insert into qnaa values (qseq.nextval, '문의 1', '문의 1 내용', 'kkt', sysdate, 0, qseq.currval, 'N');
 insert into qnaa values (qseq.nextval, '문의 2', '문의 2 내용', 'aaaaaaaa', sysdate, 0, qseq.currval, 'N');
@@ -26,4 +26,5 @@ insert into qnaa values (qseq.nextval, '답변 5', '답변 5 내용', 'admin', s
 commit;
 desc qnaa;
 
-select * from qnaa order by parno desc, lev asc, no asc;
+drop table memberb;
+commit;

@@ -7,7 +7,7 @@
 %>
 <div class="hd_wrap">
 <a href="index.jsp" class="logo">
-<img src="./img/icon/h1_title.jpg" alt="로고">
+<img src="./img/icon/logo_title.png" alt="로고">
 </a>
 <nav class="tnb">
     <% 
